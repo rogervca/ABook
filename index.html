@@ -1,65 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ABook — Future Science Library</title>
   <style>
-    body { margin:0; background:#0f172a; color:#f8fafc; font-family:sans-serif; }
-    header { background:#020617; padding:14px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-wrap:wrap; gap:10px; }
-    .brand { font-size:1.4rem; font-weight:800; color:#06b6d4; }
-    .brand span { color:#f59e0b; }
-    .wallet { background:rgba(245,158,11,0.15); border:1px solid #f59e0b; color:#f59e0b; padding:6px 14px; border-radius:999px; font-weight:bold; }
-    button { background:#06b6d4; color:#020617; border:none; padding:10px 18px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:0.95rem; }
-    button.gray { background:#334155; color:#fff; }
-    button.gold { background:#f59e0b; color:#020617; }
-    .box { max-width:900px; margin:30px auto; padding:0 20px; }
-    .login-card { max-width:400px; margin:70px auto; background:#1e293b; padding:32px; border-radius:16px; text-align:center; }
-    .login-card input { width:90%; padding:12px; margin:14px 0; border-radius:8px; border:1px solid #475569; background:#0f172a; color:#fff; font-size:1rem; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
-    .card { background:#1e293b; border-radius:16px; overflow:hidden; border:1px solid #334155; }
-    .cover { height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:16px; text-align:center; }
-    .cover-blue { background:linear-gradient(135deg, #0e7490, #1e1b4b); }
-    .cover-gold { background:linear-gradient(135deg, #b45309, #31102f); }
-    .card-body { padding:20px; }
-    .reader-card { background:#1e293b; padding:26px; border-radius:16px; border:1px solid #334155; line-height:1.7; font-size:1.05rem; }
-    .lock-box { background:rgba(245,158,11,0.1); border:1px dashed #f59e0b; padding:20px; border-radius:12px; text-align:center; margin-top:16px; }
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { margin: 0; background: #0f172a; color: #f8fafc; min-height: 100vh; }
+    header {
+      background: #020617; padding: 14px 24px; display: flex; justify-content: space-between;
+      align-items: center; border-bottom: 1px solid #334155; flex-wrap: wrap; gap: 10px;
+    }
+    .brand { font-size: 1.5rem; font-weight: 800; color: #06b6d4; }
+    .brand span { color: #f59e0b; }
+    .wallet {
+      background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b;
+      color: #f59e0b; padding: 6px 14px; border-radius: 999px; font-weight: bold;
+    }
+    .btn {
+      display: inline-block; background: #06b6d4; color: #020617; text-decoration: none;
+      padding: 10px 18px; border-radius: 8px; font-weight: bold; font-size: 0.95rem;
+    }
+    .btn:hover { background: #0891b2; color: #fff; }
+    .btn-gray { background: #334155; color: #f8fafc; }
+    .btn-gold { background: #f59e0b; color: #020617; }
+    .container { max-width: 960px; margin: 30px auto; padding: 0 20px; }
+
+    /* Screen Switching via CSS :target (100% Script-Free) */
+    .screen { display: none; }
+    #login { display: block; }
+    .screen:target { display: block; }
+    body:has(.screen:target) #login { display: none; }
+    #login:target { display: block; }
+
+    .login-card {
+      max-width: 420px; margin: 70px auto; background: #1e293b; padding: 32px;
+      border-radius: 16px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .login-card input {
+      width: 100%; padding: 12px; margin: 14px 0; border-radius: 8px;
+      border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 1rem;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 22px; }
+    .card { background: #1e293b; border-radius: 16px; overflow: hidden; border: 1px solid #334155; }
+    .cover { height: 190px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 18px; text-align: center; }
+    .cover-blue { background: linear-gradient(135deg, #0e7490, #1e1b4b); }
+    .cover-gold { background: linear-gradient(135deg, #b45309, #31102f); }
+    .card-body { padding: 20px; }
+    .reader-card { background: #1e293b; padding: 28px; border-radius: 16px; border: 1px solid #334155; line-height: 1.75; font-size: 1.05rem; }
+    .lock-box { background: rgba(245, 158, 11, 0.1); border: 1px dashed #f59e0b; padding: 22px; border-radius: 12px; text-align: center; margin-top: 16px; }
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
   </style>
 </head>
 <body>
 
 <header>
   <div class="brand">ABook<span>Library</span></div>
-  <div id="topBar" style="display:none; align-items:center; gap:12px; flex-wrap:wrap;">
-    <span id="welcomeMsg" style="color:#94a3b8; font-weight:bold;"></span>
-    <span class="wallet">💵 Wallet: $<span id="walletAmt">20</span></span>
-    <button class="gray" onclick="showShelf()">📚 Bookshelf</button>
-    <button class="gray" onclick="exitSite()">Logout</button>
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <span class="wallet">💵 Paper Money: $20</span>
+    <a href="#shelf" class="btn btn-gray">📚 Bookshelf</a>
+    <a href="#login" class="btn btn-gray">Logout</a>
   </div>
 </header>
 
-<!-- LOGIN -->
-<div id="loginScreen" class="login-card">
+<!-- 1. LOGIN SCREEN -->
+<div id="login" class="screen login-card">
   <div style="font-size:3rem;">🚀🧬</div>
   <h2>Welcome to ABook</h2>
   <p style="color:#94a3b8;">Sign in to get <b>$20 in free Paper Money</b> and explore future science books!</p>
-  <input type="text" id="studentName" placeholder="Type your name..." onkeydown="if(event.key==='Enter') enterSite();">
-  <button style="width:96%;" onclick="enterSite()">Enter Library</button>
+  <input type="text" placeholder="Enter your student name (e.g., Alex)..." />
+  <a href="#shelf" class="btn" style="width:100%;">Enter Library</a>
 </div>
 
-<!-- BOOKSHELF -->
-<div id="shelfScreen" class="box" style="display:none;">
+<!-- 2. BOOKSHELF SCREEN -->
+<div id="shelf" class="screen container">
   <h2>Featured Future Technology Shelf</h2>
+  <p style="color:#94a3b8; margin-bottom:22px;">Read the 20% Free Preview first, then unlock the remaining 80% with your Paper Money wallet!</p>
   <div class="grid">
     <div class="card">
       <div class="cover cover-blue">
         <div style="font-size:3rem;">🧬🛸</div>
         <h3 style="margin:6px 0 0;">Project AAG-2050</h3>
-        <small style="color:#bae6fd;">Inside Artificial Wombs & Bio-Engineering</small>
+        <small style="color:#bae6fd;">Inside Artificial Wombs & Future Bio-Engineering</small>
       </div>
       <div class="card-body">
         <p style="color:#94a3b8; font-size:0.92rem;">20% Free Preview (Chapters 1–3) + 80% Full Unlock ($5 Paper Money).</p>
-        <button onclick="openBook('library')">📖 Read Library Edition</button>
+        <a href="#lib-p1" class="btn">📖 Read Free Preview</a>
       </div>
     </div>
 
@@ -67,94 +93,114 @@
       <div class="cover cover-gold">
         <div style="font-size:3rem;">⚡🧪</div>
         <h3 style="margin:6px 0 0;">Babies in a Biobag?</h3>
-        <small style="color:#fde68a;">9 Wild Facts About 2050 Medicine (Lite)</small>
+        <small style="color:#fde68a;">9 Wild Facts About 2050 Medicine (Lite Edition)</small>
       </div>
       <div class="card-body">
         <p style="color:#94a3b8; font-size:0.92rem;">Pocket Quick-Start Edition ($5 Paper Money).</p>
-        <button class="gold" onclick="openBook('lite')">⚡ Open Lite Edition</button>
+        <a href="#lite-lock" class="btn btn-gold">⚡ Open Lite Edition</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- READER -->
-<div id="readerScreen" class="box" style="display:none;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
-    <h2 id="bookHeading" style="margin:0;"></h2>
+<!-- 3. LIBRARY PAGE 1 (FREE) -->
+<div id="lib-p1" class="screen container">
+  <div class="nav-bar">
+    <h2 style="margin:0;">📘 Project AAG-2050 — Page 1 of 4</h2>
     <div>
-      <button class="gray" onclick="changePage(-1)">⬅ Prev</button>
-      <span id="pageNum" style="margin:0 12px; font-weight:bold;">Page 1</span>
-      <button onclick="changePage(1)">Next ➡</button>
+      <a href="#shelf" class="btn btn-gray">⬅ Shelf</a>
+      <a href="#lib-p2" class="btn">Next Page ➡</a>
     </div>
   </div>
-
   <div class="reader-card">
-    <div id="pageContent"></div>
-    <div id="paywallBox" class="lock-box" style="display:none;">
-      <h3>🔒 80% Full Edition Locked</h3>
-      <p>Unlock all remaining chapters using your Paper Money wallet!</p>
-      <button class="gold" onclick="unlockBook()">💵 Unlock Full Book ($5 Paper Money)</button>
+    <h3>Chapter 1: Can a Single Hair Cell Start a New Life? (FREE)</h3>
+    <p>Inside the root of a single hair sits a complete biological instruction manual—your DNA. By introducing genetic switches to an ordinary skin or hair cell, scientists can rewind its clock into an induced pluripotent stem cell (iPSC), proving every body cell holds an extraordinary blueprint.</p>
+  </div>
+</div>
+
+<!-- 4. LIBRARY PAGE 2 (FREE) -->
+<div id="lib-p2" class="screen container">
+  <div class="nav-bar">
+    <h2 style="margin:0;">📘 Project AAG-2050 — Page 2 of 4</h2>
+    <div>
+      <a href="#lib-p1" class="btn btn-gray">⬅ Prev</a>
+      <a href="#lib-p3" class="btn">Next Page ➡</a>
+    </div>
+  </div>
+  <div class="reader-card">
+    <h3>Chapter 2: The First Week "Handshake" & Smart Fluid (FREE)</h3>
+    <p>Around Day 5 after fertilization, a hollow ball of cells called a blastocyst runs out of starter fuel and urgently needs a lifeline. Its outer cells perform a delicate chemical "handshake" with the uterine lining to build the placenta, guided by bio-identical hormones dissolved in warm, oxygenated nutrient fluid.</p>
+  </div>
+</div>
+
+<!-- 5. LIBRARY PAGE 3 (80% PAYWALL LOCK) -->
+<div id="lib-p3" class="screen container">
+  <div class="nav-bar">
+    <h2 style="margin:0;">📘 Project AAG-2050 — Page 3 of 4</h2>
+    <div>
+      <a href="#lib-p2" class="btn btn-gray">⬅ Prev</a>
+    </div>
+  </div>
+  <div class="reader-card">
+    <h3>🔒 Chapters 4–12: Synthetic Blood, Biobags & 2050 Roadmap</h3>
+    <p style="color:#94a3b8;">You finished the 20% Free Preview! Spend $5 from your Paper Money wallet to unlock all remaining chapters.</p>
+    <div class="lock-box">
+      <h3>💵 Unlock Full Edition ($5 Paper Money)</h3>
+      <p>Remaining Balance After Unlock: <b>$15 Paper Money</b></p>
+      <a href="#lib-p4" class="btn btn-gold">Pay $5 Paper Money & Read Now</a>
     </div>
   </div>
 </div>
 
-<script>
-  var wallet = 20;
-  var unlockedLib = false;
-  var unlockedLite = false;
-  var activeType = "library";
-  var pageIdx = 0;
+<!-- 6. LIBRARY PAGE 4 (UNLOCKED FULL EDITION) -->
+<div id="lib-p4" class="screen container">
+  <div class="nav-bar">
+    <h2 style="margin:0;">📘 Project AAG-2050 — Unlocked Full Edition ($15 Left)</h2>
+    <div>
+      <a href="#shelf" class="btn btn-gray">📚 Back to Bookshelf</a>
+    </div>
+  </div>
+  <div class="reader-card">
+    <h3>✅ Unlocked: Synthetic Blood, Microchip Factories & The 2017 Lamb Biobag</h3>
+    <p><b>Synthetic Blood:</b> Microscopic hemoglobin vesicles carry oxygen universally for any blood type and stay shelf-stable for years beyond the 42-day donor limit.</p>
+    <p><b>Microchip Stem-Cell Factories:</b> Bio-sensors monitor oxygen thousands of times per second and signal stem cells to produce fresh red blood cells on demand.</p>
+    <p><b>2017 Lamb Biobag & 2050 Goal:</b> Researchers supported premature lambs inside fluid-filled Biobags for four weeks. Modular cartridges and AI sensors aim to bring this therapy down to $20,000 by 2050.</p>
+  </div>
+</div>
 
-  var libPages = [
-    { title: "Chapter 1: Can a Single Hair Cell Start a New Life? (FREE)", free: true, text: "Inside the root of a single hair sits a complete biological instruction manual—your DNA. By introducing genetic switches to an ordinary skin or hair cell, scientists can rewind its clock into an induced pluripotent stem cell (iPSC), proving every body cell holds an extraordinary blueprint." },
-    { title: "Chapter 2: The First Week 'Handshake' (FREE)", free: true, text: "Around Day 5 after fertilization, a hollow ball of cells called a blastocyst runs out of starter fuel and urgently needs a lifeline. Its outer trophoblast cells perform a delicate chemical 'handshake' with the uterine lining to build the placenta." },
-    { title: "Chapter 3: Lab-Made Hormones & Smart Fluid (FREE)", free: true, text: "Pregnancy relies on chemical messengers like progesterone and estrogen to pace healthy growth. In an external life-support capsule, labs manufacture bio-identical hormones and dissolve them into a warm, oxygenated nutrient fluid." },
-    { title: "Chapter 4: Synthetic Blood Beyond the 42-Day Limit", free: false, text: "Donated human blood expires in 42 days. Bio-engineers are developing synthetic hemoglobin vesicles—microscopic lipid bubbles carrying purified oxygen-binding proteins that work universally for any blood type and stay shelf-stable for years." },
-    { title: "Chapter 5: Microchip Stem-Cell Blood Factories", free: false, text: "Tiny bio-sensors inside artificial circulation tubes measure oxygen and hormone levels thousands of times per second, signaling stem-cell bioreactors to produce fresh red blood cells on demand." },
-    { title: "Chapter 6: The 2017 Lamb 'Biobag' & 2050 Roadmap ($20K Goal)", free: false, text: "In 2017, researchers supported premature baby lambs inside a clear, fluid-filled Biobag for four full weeks. Combining modular cartridges and AI microchips aims to make life-saving neonatal capsules an affordable $20,000 hospital therapy by 2050." }
-  ];
+<!-- 7. LITE EDITION LOCK & UNLOCK -->
+<div id="lite-lock" class="screen container">
+  <div class="nav-bar">
+    <h2 style="margin:0;">⚡ Babies in a Biobag? (Lite Edition)</h2>
+    <a href="#shelf" class="btn btn-gray">⬅ Back to Shelf</a>
+  </div>
+  <div class="reader-card">
+    <div class="lock-box">
+      <h3>🔒 Pocket Lite Edition ($5 Paper Money)</h3>
+      <p>Unlock all 9 wild facts about 2050 bio-engineering in a fast pocket guide!</p>
+      <a href="#lite-open" class="btn btn-gold">Pay $5 Paper Money & Read Lite Book</a>
+    </div>
+  </div>
+</div>
 
-  var litePages = [
-    { title: "Babies in a Biobag? — 9 Wild Facts About 2050 Medicine", free: false, text: "1. Hair-Cell Blueprint: Ordinary skin or hair cells can be rewound into stem cells.\n2. Day-6 Handshake: A blastocyst anchors onto a nutrient wall to build a placenta.\n3. Lab-Made Hormones: Bio-identical hormones guide growth in smart fluid.\n4. 42-Day Synthetic Blood: Freeze-dried hemoglobin vesicles work for any blood type.\n5. Microchip Blood Factories: Sensors command stem cells to make fresh blood.\n6. Dump-and-Replace Loop: Smart valves flush waste fluid automatically.\n7. 2017 Lamb Biobag: Premature lambs grew healthily for 4 weeks in fluid pouches.\n8. Umbilical Nutrition: 100% of oxygen and calories flow through the umbilical cord.\n9. $20,000 Future Goal: Modular bio-engineering makes neonatal rescue affordable by 2050." }
-  ];
+<div id="lite-open" class="screen container">
+  <div class="nav-bar">
+    <h2 style="margin:0;">⚡ Babies in a Biobag? — Unlocked ($15 Left)</h2>
+    <a href="#shelf" class="btn btn-gray">📚 Back to Bookshelf</a>
+  </div>
+  <div class="reader-card">
+    <h3>✅ 9 Wild Facts About 2050 Medicine</h3>
+    <p>1. Hair-Cell Blueprint: Ordinary skin or hair cells can be rewound into master stem cells.<br>
+    2. Day-6 Handshake: A blastocyst anchors onto a nutrient wall to build a placenta.<br>
+    3. Lab-Made Hormones: Bio-identical hormones guide growth in smart fluid.<br>
+    4. 42-Day Synthetic Blood: Freeze-dried hemoglobin vesicles work for any blood type.<br>
+    5. Microchip Blood Factories: Sensors command stem cells to make fresh blood.<br>
+    6. Dump-and-Replace Loop: Smart valves flush waste fluid automatically.<br>
+    7. 2017 Lamb Biobag: Premature lambs grew healthily for 4 weeks in fluid pouches.<br>
+    8. Umbilical Nutrition: 100% of oxygen and calories flow through the umbilical cord.<br>
+    9. $20,000 Future Goal: Modular bio-engineering makes neonatal rescue affordable by 2050.</p>
+  </div>
+</div>
 
-  function enterSite() {
-    var name = document.getElementById("studentName").value.trim();
-    if (!name) { alert("Please type a name!"); return; }
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("topBar").style.display = "flex";
-    document.getElementById("welcomeMsg").innerText = "Welcome to ABook, " + name + "!";
-    showShelf();
-  }
-
-  function exitSite() {
-    document.getElementById("topBar").style.display = "none";
-    document.getElementById("shelfScreen").style.display = "none";
-    document.getElementById("readerScreen").style.display = "none";
-    document.getElementById("loginScreen").style.display = "block";
-  }
-
-  function showShelf() {
-    document.getElementById("readerScreen").style.display = "none";
-    document.getElementById("shelfScreen").style.display = "block";
-  }
-
-  function openBook(type) {
-    activeType = type;
-    pageIdx = 0;
-    document.getElementById("shelfScreen").style.display = "none";
-    document.getElementById("readerScreen").style.display = "block";
-    document.getElementById("bookHeading").innerText = type === "library" ? "📘 Project AAG-2050" : "⚡ Babies in a Biobag? (Lite)";
-    renderPage();
-  }
-
-  function renderPage() {
-    var pages = activeType === "library" ? libPages : litePages;
-    var isOpen = activeType === "library" ? unlockedLib : unlockedLite;
-    var p = pages[pageIdx];
-
-    document.getElementById("pageNum").innerText = "Page " + (pageIdx + 1) + " of " + pages.length;
-    if (p.free || isOpen) {
-      document.getElementById("pageContent").innerHTML = "<h3>" + p.title + "</h3><p style='white-space:pre-line;'>" + p.text + "</p>";
-      document.getElementById("paywallBox").style.display = "none";
-    } else {
+</body>
+</html>
