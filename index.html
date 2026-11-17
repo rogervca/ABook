@@ -3,38 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>ABook Test</title>
+  <style>
+    body { background:#0f172a; color:white; font-family:sans-serif; text-align:center; padding:50px; }
+    .btn { display:inline-block; padding:12px 24px; font-size:16px; background:#06b6d4; color:#020617; text-decoration:none; border-radius:8px; font-weight:bold; }
+    .btn-gray { background:#475569; color:white; }
+    #libraryScreen { display:none; }
+    #libraryScreen:target { display:block; }
+    body:has(#libraryScreen:target) #loginScreen { display:none; }
+  </style>
 </head>
-<body style="background:#0f172a; color:white; font-family:sans-serif; text-align:center; padding:50px;">
+<body>
 
   <div id="loginScreen">
-    <h1>🚀 ABook Stage 1 Test</h1>
-    <input type="text" id="studentName" placeholder="Type Alex..." style="padding:10px; font-size:16px;">
-    <button onclick="enterSite()" style="padding:10px 20px; font-size:16px; background:#06b6d4; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Enter Library</button>
+    <h1>🚀 ABook Stage 1B Test</h1>
+    <input type="text" placeholder="Type Alex..." style="padding:10px; font-size:16px;"><br><br>
+    <a href="#libraryScreen" class="btn">Enter Library</a>
   </div>
 
-  <div id="libraryScreen" style="display:none;">
-    <h1 id="welcomeMsg"></h1>
+  <div id="libraryScreen">
+    <h1>Welcome to ABook, Student!</h1>
     <p style="color:#f59e0b; font-size:20px; font-weight:bold;">💵 Wallet: $20 Paper Money</p>
-    <button onclick="exitSite()" style="padding:10px 20px; background:#475569; color:white; border:none; border-radius:6px; cursor:pointer;">Logout</button>
+    <a href="#loginScreen" class="btn btn-gray">Logout</a>
   </div>
-
-  <script>
-    function enterSite() {
-      var name = document.getElementById("studentName").value;
-      if (name === "") {
-        alert("Please type a name!");
-        return;
-      }
-      document.getElementById("loginScreen").style.display = "none";
-      document.getElementById("libraryScreen").style.display = "block";
-      document.getElementById("welcomeMsg").innerText = "Welcome to ABook, " + name + "!";
-    }
-
-    function exitSite() {
-      document.getElementById("libraryScreen").style.display = "none";
-      document.getElementById("loginScreen").style.display = "block";
-    }
-  </script>
 
 </body>
 </html>
