@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ABook — Future Science Library</title>
+  <title>ABook — Interactive Future Science Library</title>
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
     body { margin: 0; background: #0f172a; color: #f8fafc; min-height: 100vh; }
@@ -24,9 +24,9 @@
     .btn:hover { background: #0891b2; color: #fff; }
     .btn-gray { background: #334155; color: #f8fafc; }
     .btn-gold { background: #f59e0b; color: #020617; }
-    .container { max-width: 960px; margin: 30px auto; padding: 0 20px; }
+    .container { max-width: 1020px; margin: 28px auto; padding: 0 20px; }
 
-    /* Screen Switching via CSS :target (100% Script-Free) */
+    /* Screen Switching */
     .screen { display: none; }
     #login { display: block; }
     .screen:target { display: block; }
@@ -42,14 +42,31 @@
       border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 1rem;
     }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 22px; }
-    .card { background: #1e293b; border-radius: 16px; overflow: hidden; border: 1px solid #334155; }
+    .reader-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; }
+    @media (max-width: 800px) { .reader-grid { grid-template-columns: 1fr; } }
+
+    .card, .panel { background: #1e293b; border-radius: 16px; border: 1px solid #334155; overflow: hidden; }
+    .panel { padding: 24px; line-height: 1.7; }
     .cover { height: 190px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 18px; text-align: center; }
     .cover-blue { background: linear-gradient(135deg, #0e7490, #1e1b4b); }
     .cover-gold { background: linear-gradient(135deg, #b45309, #31102f); }
     .card-body { padding: 20px; }
-    .reader-card { background: #1e293b; padding: 28px; border-radius: 16px; border: 1px solid #334155; line-height: 1.75; font-size: 1.05rem; }
     .lock-box { background: rgba(245, 158, 11, 0.1); border: 1px dashed #f59e0b; padding: 22px; border-radius: 12px; text-align: center; margin-top: 16px; }
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+
+    /* Script-Free Interactive 3-Option Quiz Styling */
+    .quiz-item { background: #0f172a; padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid #334155; }
+    .quiz-item p { margin: 0 0 10px; font-weight: bold; font-size: 0.95rem; }
+    .opt-label {
+      display: block; padding: 8px 12px; margin: 6px 0; border-radius: 8px;
+      background: #1e293b; cursor: pointer; border: 1px solid #334155; font-size: 0.9rem;
+    }
+    .opt-label:hover { border-color: #06b6d4; }
+    .opt-label input { margin-right: 8px; }
+    .result-msg { display: none; margin-top: 8px; font-weight: bold; font-size: 0.9rem; padding: 6px 10px; border-radius: 6px; }
+    .quiz-item:has(input.right:checked) .msg-right { display: block; background: rgba(16,185,129,0.2); color: #10b981; animation: pop 0.4s ease; }
+    .quiz-item:has(input.wrong:checked) .msg-wrong { display: block; background: rgba(239,68,68,0.2); color: #ef4444; }
+    @keyframes pop { 0% { transform: scale(0.8); } 70% { transform: scale(1.06); } 100% { transform: scale(1); } }
   </style>
 </head>
 <body>
@@ -67,7 +84,7 @@
 <div id="login" class="screen login-card">
   <div style="font-size:3rem;">🚀🧬</div>
   <h2>Welcome to ABook</h2>
-  <p style="color:#94a3b8;">Sign in to get <b>$20 in free Paper Money</b> and explore future science books!</p>
+  <p style="color:#94a3b8;">Sign in to get <b>$20 in free Paper Money</b>, read future science books, and play interactive quizzes!</p>
   <input type="text" placeholder="Enter your student name (e.g., Alex)..." />
   <a href="#shelf" class="btn" style="width:100%;">Enter Library</a>
 </div>
@@ -75,7 +92,7 @@
 <!-- 2. BOOKSHELF SCREEN -->
 <div id="shelf" class="screen container">
   <h2>Featured Future Technology Shelf</h2>
-  <p style="color:#94a3b8; margin-bottom:22px;">Read the 20% Free Preview first, then unlock the remaining 80% with your Paper Money wallet!</p>
+  <p style="color:#94a3b8; margin-bottom:22px;">Read the 20% Free Preview and beat the science quizzes before unlocking the full book with Paper Money!</p>
   <div class="grid">
     <div class="card">
       <div class="cover cover-blue">
@@ -84,8 +101,8 @@
         <small style="color:#bae6fd;">Inside Artificial Wombs & Future Bio-Engineering</small>
       </div>
       <div class="card-body">
-        <p style="color:#94a3b8; font-size:0.92rem;">20% Free Preview (Chapters 1–3) + 80% Full Unlock ($5 Paper Money).</p>
-        <a href="#lib-p1" class="btn">📖 Read Free Preview</a>
+        <p style="color:#94a3b8; font-size:0.92rem;">20% Free Preview + Interactive 3-Option Quizzes + 80% Full Unlock ($5 Paper Money).</p>
+        <a href="#lib-p1" class="btn">📖 Read & Play Free Preview</a>
       </div>
     </div>
 
@@ -103,7 +120,7 @@
   </div>
 </div>
 
-<!-- 3. LIBRARY PAGE 1 (FREE) -->
+<!-- 3. LIBRARY PAGE 1 + QUIZZES (FREE) -->
 <div id="lib-p1" class="screen container">
   <div class="nav-bar">
     <h2 style="margin:0;">📘 Project AAG-2050 — Page 1 of 4</h2>
@@ -112,13 +129,37 @@
       <a href="#lib-p2" class="btn">Next Page ➡</a>
     </div>
   </div>
-  <div class="reader-card">
-    <h3>Chapter 1: Can a Single Hair Cell Start a New Life? (FREE)</h3>
-    <p>Inside the root of a single hair sits a complete biological instruction manual—your DNA. By introducing genetic switches to an ordinary skin or hair cell, scientists can rewind its clock into an induced pluripotent stem cell (iPSC), proving every body cell holds an extraordinary blueprint.</p>
+  <div class="reader-grid">
+    <div class="panel">
+      <h3>Chapter 1: Can a Single Hair Cell Start a New Life? (FREE)</h3>
+      <p>Inside the root of a single hair sits a complete biological instruction manual—your <b>DNA</b>. By introducing genetic switches to an ordinary skin or hair cell, scientists can rewind its clock into an <b>induced pluripotent stem cell (iPSC)</b>.</p>
+      <p>Researchers have already turned ordinary mouse skin cells into functional gametes that grew into healthy baby mice, proving every body cell holds an extraordinary blueprint.</p>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-top:0;">🎯 Page 1 Quiz Challenge</h3>
+      <div class="quiz-item">
+        <p>1. What is the complete biological instruction manual inside a hair root?</p>
+        <label class="opt-label"><input type="radio" name="q1" class="wrong">A) Chlorophyll</label>
+        <label class="opt-label"><input type="radio" name="q1" class="right">B) DNA</label>
+        <label class="opt-label"><input type="radio" name="q1" class="wrong">C) Glucose</label>
+        <div class="result-msg msg-right">🎉🌟 Correct! +10 Science XP!</div>
+        <div class="result-msg msg-wrong">❌ Not quite—check the first sentence of Chapter 1!</div>
+      </div>
+
+      <div class="quiz-item">
+        <p>2. What are rewound body cells that can become almost any tissue called?</p>
+        <label class="opt-label"><input type="radio" name="q2" class="right">A) iPSCs (Stem Cells)</label>
+        <label class="opt-label"><input type="radio" name="q2" class="wrong">B) Neurons</label>
+        <label class="opt-label"><input type="radio" name="q2" class="wrong">C) Platelets</label>
+        <div class="result-msg msg-right">🚀✨ Awesome! You earned +10 XP! Click Next Page ➡ for more!</div>
+        <div class="result-msg msg-wrong">❌ Try again! Look for the bold abbreviation in Chapter 1.</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- 4. LIBRARY PAGE 2 (FREE) -->
+<!-- 4. LIBRARY PAGE 2 + QUIZZES (FREE) -->
 <div id="lib-p2" class="screen container">
   <div class="nav-bar">
     <h2 style="margin:0;">📘 Project AAG-2050 — Page 2 of 4</h2>
@@ -127,80 +168,22 @@
       <a href="#lib-p3" class="btn">Next Page ➡</a>
     </div>
   </div>
-  <div class="reader-card">
-    <h3>Chapter 2: The First Week "Handshake" & Smart Fluid (FREE)</h3>
-    <p>Around Day 5 after fertilization, a hollow ball of cells called a blastocyst runs out of starter fuel and urgently needs a lifeline. Its outer cells perform a delicate chemical "handshake" with the uterine lining to build the placenta, guided by bio-identical hormones dissolved in warm, oxygenated nutrient fluid.</p>
-  </div>
-</div>
-
-<!-- 5. LIBRARY PAGE 3 (80% PAYWALL LOCK) -->
-<div id="lib-p3" class="screen container">
-  <div class="nav-bar">
-    <h2 style="margin:0;">📘 Project AAG-2050 — Page 3 of 4</h2>
-    <div>
-      <a href="#lib-p2" class="btn btn-gray">⬅ Prev</a>
+  <div class="reader-grid">
+    <div class="panel">
+      <h3>Chapter 2: The First Week "Handshake" & Smart Fluid (FREE)</h3>
+      <p>Around Day 5 after fertilization, a hollow ball of cells called a <b>blastocyst</b> runs out of starter fuel and urgently needs a lifeline. Its outer cells perform a delicate chemical "handshake" with the uterine lining to build the <b>placenta</b>.</p>
+      <p>In an external life-support capsule, labs manufacture bio-identical <b>hormones</b> (like progesterone) and dissolve them into warm, oxygenated nutrient fluid.</p>
     </div>
-  </div>
-  <div class="reader-card">
-    <h3>🔒 Chapters 4–12: Synthetic Blood, Biobags & 2050 Roadmap</h3>
-    <p style="color:#94a3b8;">You finished the 20% Free Preview! Spend $5 from your Paper Money wallet to unlock all remaining chapters.</p>
-    <div class="lock-box">
-      <h3>💵 Unlock Full Edition ($5 Paper Money)</h3>
-      <p>Remaining Balance After Unlock: <b>$15 Paper Money</b></p>
-      <a href="#lib-p4" class="btn btn-gold">Pay $5 Paper Money & Read Now</a>
-    </div>
-  </div>
-</div>
 
-<!-- 6. LIBRARY PAGE 4 (UNLOCKED FULL EDITION) -->
-<div id="lib-p4" class="screen container">
-  <div class="nav-bar">
-    <h2 style="margin:0;">📘 Project AAG-2050 — Unlocked Full Edition ($15 Left)</h2>
-    <div>
-      <a href="#shelf" class="btn btn-gray">📚 Back to Bookshelf</a>
-    </div>
-  </div>
-  <div class="reader-card">
-    <h3>✅ Unlocked: Synthetic Blood, Microchip Factories & The 2017 Lamb Biobag</h3>
-    <p><b>Synthetic Blood:</b> Microscopic hemoglobin vesicles carry oxygen universally for any blood type and stay shelf-stable for years beyond the 42-day donor limit.</p>
-    <p><b>Microchip Stem-Cell Factories:</b> Bio-sensors monitor oxygen thousands of times per second and signal stem cells to produce fresh red blood cells on demand.</p>
-    <p><b>2017 Lamb Biobag & 2050 Goal:</b> Researchers supported premature lambs inside fluid-filled Biobags for four weeks. Modular cartridges and AI sensors aim to bring this therapy down to $20,000 by 2050.</p>
-  </div>
-</div>
+    <div class="panel">
+      <h3 style="margin-top:0;">🎯 Page 2 Quiz Challenge</h3>
+      <div class="quiz-item">
+        <p>3. What is the hollow ball of cells formed around Day 5 called?</p>
+        <label class="opt-label"><input type="radio" name="q3" class="wrong">A) Ribosome</label>
+        <label class="opt-label"><input type="radio" name="q3" class="right">B) Blastocyst</label>
+        <label class="opt-label"><input type="radio" name="q3" class="wrong">C) Tendon</label>
+        <div class="result-msg msg-right">🎉🌟 Spot on! +10 Science XP!</div>
+        <div class="result-msg msg-wrong">❌ Not quite—try option B!</div>
+      </div>
 
-<!-- 7. LITE EDITION LOCK & UNLOCK -->
-<div id="lite-lock" class="screen container">
-  <div class="nav-bar">
-    <h2 style="margin:0;">⚡ Babies in a Biobag? (Lite Edition)</h2>
-    <a href="#shelf" class="btn btn-gray">⬅ Back to Shelf</a>
-  </div>
-  <div class="reader-card">
-    <div class="lock-box">
-      <h3>🔒 Pocket Lite Edition ($5 Paper Money)</h3>
-      <p>Unlock all 9 wild facts about 2050 bio-engineering in a fast pocket guide!</p>
-      <a href="#lite-open" class="btn btn-gold">Pay $5 Paper Money & Read Lite Book</a>
-    </div>
-  </div>
-</div>
-
-<div id="lite-open" class="screen container">
-  <div class="nav-bar">
-    <h2 style="margin:0;">⚡ Babies in a Biobag? — Unlocked ($15 Left)</h2>
-    <a href="#shelf" class="btn btn-gray">📚 Back to Bookshelf</a>
-  </div>
-  <div class="reader-card">
-    <h3>✅ 9 Wild Facts About 2050 Medicine</h3>
-    <p>1. Hair-Cell Blueprint: Ordinary skin or hair cells can be rewound into master stem cells.<br>
-    2. Day-6 Handshake: A blastocyst anchors onto a nutrient wall to build a placenta.<br>
-    3. Lab-Made Hormones: Bio-identical hormones guide growth in smart fluid.<br>
-    4. 42-Day Synthetic Blood: Freeze-dried hemoglobin vesicles work for any blood type.<br>
-    5. Microchip Blood Factories: Sensors command stem cells to make fresh blood.<br>
-    6. Dump-and-Replace Loop: Smart valves flush waste fluid automatically.<br>
-    7. 2017 Lamb Biobag: Premature lambs grew healthily for 4 weeks in fluid pouches.<br>
-    8. Umbilical Nutrition: 100% of oxygen and calories flow through the umbilical cord.<br>
-    9. $20,000 Future Goal: Modular bio-engineering makes neonatal rescue affordable by 2050.</p>
-  </div>
-</div>
-
-</body>
-</html>
+      <div class="quiz-item">
